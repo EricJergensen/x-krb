@@ -1,0 +1,53 @@
+---linux as kdc---
+for KrbTest3.java:
+
+apache config:
+<Directory /var/www/html/krb>
+  AuthType Kerberos
+  AuthName "Edge"
+  KrbMethodNegotiate on
+  KrbMethodK5Passwd off
+  Krb5Keytab /etc/apache2/http.keytab
+  Require user eric@EDGETI.COM
+</Directory>
+
+add principal:
+kadmin.local
+  ktadd HTTP/katana
+
+create keytab:
+kinit -k -t /etc/apache2/http.keytab HTTP/katana
+
+---setup ad in windows server 2012R2---
+note: this assumes a from-scratch ad network starting at forest level, not just a federated server
+click "start" and run server manager
+(*) role-based ... installation
+select this server (in this case, delightfully named, win-v5q1movjqch)
+select Active Directory Domain Services
+Add Features
+next (repeat)
+install
+notice pops up on dashboard (upper right) to promote to DC, run that
+add a new forest (aws.edgeti.com)
+wait
+add Directory Services Restore Mode password (Edg3)
+no DNS delegation, next
+wait
+I guess AWS is fine for netbios name ... next
+default paths, next
+review, next
+wait
+install
+wait & it'll reboot
+login in as AWS\administrator
+
+---ad as kdc---
+added eric / Edg3Tr33
+install iis, adding "Security/Windows Authentication"
+edit default web site, change authentication:
+  disable anonymous
+  enable windows
+    advanced settings: delete NTLM auth (Negotiate only)
+setspn -a HTTP/dev-ad.edge.internal win-v5q1m0vjqch
+if you want LSA ticket cache to work, get unlimited strength JCE policy files
+still can't get TGT, even with HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\Kerberos\Parameters\AllowTGTSessionKey (REG_SZ) 1
