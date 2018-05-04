@@ -1,0 +1,13 @@
+2018-05-04 17:37:37,785 ERROR e.s.p.d.t.JavascriptTransformer [DataJob-3] Failed to execute user-defined JavaScript: java.lang.UnsupportedOperationException
+Caused by:      at fetchAttributeDefs (<eval>:54)
+        at fetchAttributeDefsWrapper (<eval>:78)
+ java.lang.UnsupportedOperationException
+        at java.util.Collections$UnmodifiableCollection.add(Collections.java:1055)
+        at edge.server.pipeline.data.jobs.JobManager.fetchTest(JobManager.java:333)
+        at edge.server.pipeline.data.AbstractTabularProducerDO.getFreshDataDef(AbstractTabularProducerDO.java:133)
+        at edge.server.pipeline.data.AbstractTabularProducerDO.getDataDef(AbstractTabularProducerDO.java:124)
+        at edge.server.pipeline.data.AbstractTabularProducerDO.getAttributeDefs(AbstractTabularProducerDO.java:196)
+        at edge.server.pipeline.data.AbstractTabularProducerDO.getAttributeDefs(AbstractTabularProducerDO.java:165)
+        at jdk.nashorn.internal.scripts.Script$Recompilation$381$1800AAAAA$\^eval\_.fetchAttributeDefs(<eval>:54)
+        at jdk.nashorn.internal.scripts.Script$Recompilation$376$2635AAAAA$\^eval\_.fetchAttributeDefsWrapper(<eval>:78)
+        at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:647)
